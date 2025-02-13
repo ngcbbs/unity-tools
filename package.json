@@ -3,7 +3,7 @@
   "displayName": "Unity Utility",
   "description": "Unity Utility Collection",
   "version": "0.0.1",
-  "unity": "6.0",
+  "unity": "6000.0",
   "keywords": [
     "extension",
     "editor"
