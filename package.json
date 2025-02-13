@@ -2,7 +2,7 @@
   "name": "com.ngcbbs.unityutils",
   "displayName": "Unity Utility",
   "description": "Unity Utility Collection",
-  "version": "0.0.1",
+  "version": "0.0.1-pre1",
   "unity": "6000.0",
   "keywords": [
     "extension",
