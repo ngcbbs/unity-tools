@@ -3,15 +3,16 @@
   "displayName": "Unity Utility",
   "description": "Unity Utility Collection",
   "version": "0.0.1",
+  "unity": "6",
   "keywords": [
     "extension",
     "editor"
-  ],
+  ],  
   "category": "editor extensions",
   "dependencies": {},
   "author": {
     "name": "ngcbbs",
     "url": "https://github.com/ngcbbs"
   },
-  "documentationUrl": "https://github.com/ngcbbs/unity-utils/README.md"
+  "documentationUrl": "https://github.com/ngcbbs/unity-utils"
 }
