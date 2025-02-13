@@ -14,5 +14,9 @@
     "name": "ngcbbs",
     "url": "https://github.com/ngcbbs"
   },
-  "documentationUrl": "https://github.com/ngcbbs/unity-utils"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ngcbbs/unity-utils.git"
+  },
+  "documentationUrl": "https://github.com/ngcbbs/unity-utils/README.md"
 }
