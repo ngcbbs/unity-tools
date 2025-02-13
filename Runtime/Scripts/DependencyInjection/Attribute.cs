@@ -1,12 +1,9 @@
 using System;
 
 namespace Tools.Runtime.DependencyInjection {
-    private const AttributeTargets kInjectTarget = AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Property;
-    private const AttributeTargets kProvideTarget = AttributeTargets.Method;
-
-    [AttributeUsage(kInjectTarget)]
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Property)]
     public sealed class InjectAttribute : Attribute { }
 
-    [AttributeUsage(kProvideTarget)]
+    [AttributeUsage(AttributeTargets.Method)]
     public sealed class ProvideAttribute : Attribute { }
 }
