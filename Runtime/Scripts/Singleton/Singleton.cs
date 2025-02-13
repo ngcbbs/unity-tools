@@ -29,7 +29,7 @@ namespace Tools.Runtime.Singleton {
         /// <summary>
         /// Awake에서 사용 할 때는 반드시 base.Awake()를 오버라이드 상태로 호출.
         /// </summary>
-        protected void Awake() {
+        protected virtual void Awake() {
             Initialize();
         }
 
