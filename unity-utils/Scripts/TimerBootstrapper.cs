@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.LowLevel;
 using UnityEngine.PlayerLoop;
 
-namespace UnityTools {
+namespace UnityTools.Timer {
     internal static class TimerBootstrapper {
         private static PlayerLoopSystem _timerSystem;
 

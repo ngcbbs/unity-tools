@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UnityTools {
+namespace UnityTools.Timer {
     public class StopwatchTimer : Timer {
         public StopwatchTimer() : base(0f) { }
 

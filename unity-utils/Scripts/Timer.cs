@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UnityTools {
+namespace UnityTools.Timer {
     public abstract class Timer : IDisposable {
         public float CurrentTime { get; protected set; }
         public bool IsRunning { get; protected set; }

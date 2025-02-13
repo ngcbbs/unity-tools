@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityTools.Extensions;
 
-namespace UnityTools {
+namespace UnityTools.Timer {
     public static class TimerManager {
         private static readonly List<Timer> Timers = new();
         private static readonly List<Timer> Sweep = new();
