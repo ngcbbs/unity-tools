@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using Singleton = Tools.Runtime.Singleton;
 
 namespace Tools.Runtime.DependencyInjection {
     [DefaultExecutionOrder(-1000)]
-    public class Injector : Tools.Runtime.Singleton<Injector> {
+    public class Injector : Singleton<Injector> {
         private const BindingFlags kBindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
         private readonly Dictionary<Type, object> _registry = new();
 
