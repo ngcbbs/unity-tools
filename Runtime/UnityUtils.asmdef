@@ -1,5 +1,5 @@
 {
-    "name": "Tools",
+    "name": "UnityUtils",
     "rootNamespace": "Tools",
     "references": [],
     "includePlatforms": [],
