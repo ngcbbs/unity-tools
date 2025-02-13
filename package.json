@@ -1,14 +1,14 @@
 {
-  "displayName": "Unity Utils",
-  "name": "com.ngcbbs.unityutils",
+  "displayName": "unity-tools",
+  "name": "com.ngcbbs.unitytools",
   "version": "0.0.1-pre1",
   "unity": "6000.0",
   "description": "Unity Utility Collection",
   "keywords": [
-    "extension",
-    "editor"
+    "unity",
+    "tools"
   ],  
-  "category": "editor extensions",
+  "category": "unity tools",
   "dependencies": {},
   "author": {
     "name": "ngcbbs",

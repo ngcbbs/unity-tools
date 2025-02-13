@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using Singleton = Tools.Runtime.Singleton;
 
-namespace Tools.Runtime.DependencyInjection {
+namespace UnityTools.DependencyInjection {
     [DefaultExecutionOrder(-1000)]
     public class Injector : Singleton<Injector> {
         private const BindingFlags kBindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
@@ -34,6 +33,12 @@ namespace Tools.Runtime.DependencyInjection {
         }
 
         public Injector Register<T>(T obj) {
+            _registry[typeof(T)] = obj;
+            return this;
+        }
+        
+        // hum...
+        public Injector Register<T>(T obj, Action<T> resolver) {
             _registry[typeof(T)] = obj;
             return this;
         }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Tools.Runtime {
+namespace UnityTools {
     public static class Easings
     {
         /// <summary>

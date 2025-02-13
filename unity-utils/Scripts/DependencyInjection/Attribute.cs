@@ -1,6 +1,6 @@
 using System;
 
-namespace Tools.Runtime.DependencyInjection {
+namespace UnityTools.DependencyInjection {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Property)]
     public sealed class InjectAttribute : Attribute { }
 

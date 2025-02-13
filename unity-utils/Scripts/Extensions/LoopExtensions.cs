@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tools.Runtime.Extensions {
+namespace UnityTools.Extensions {
     public static class LoopExtensions {
         public static void ForEach<T>(this IEnumerable<T> source, Action<T> action) {
             var sweep = new List<T>(source);

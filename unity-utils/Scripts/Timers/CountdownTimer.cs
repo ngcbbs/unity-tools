@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Tools.Runtime.Timers {
+namespace UnityTools.Timer {
     public class CountdownTimer : Timer {
         public CountdownTimer(float time) : base(time) { }
 

@@ -1,6 +1,6 @@
 {
-    "name": "ngcbbs's UnityUtils",
-    "rootNamespace": "Tools",
+    "name": "UnityTools",
+    "rootNamespace": "UnityTools",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

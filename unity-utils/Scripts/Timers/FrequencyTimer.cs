@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Tools.Runtime.Timers {
+namespace UnityTools {
     public class FrequencyTimer : Timer {
         public int TicksPerSecond { get; private set; }
         public Action OnTick = delegate { };

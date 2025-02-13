@@ -1,7 +1,7 @@
-using Tools.Runtime.Extensions;
 using UnityEngine;
+using UnityTools.Extensions;
 
-namespace Tools.Runtime.Singleton {
+namespace UnityTools {
     public class Singleton<T> : MonoBehaviour where T : Component {
         protected static T instance;
 
