@@ -2,53 +2,53 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityTools.Pathfinding {
-    public class JumpPointSearchPathfinder : IAlgorithm {
-        private readonly Grid _grid;
-
+    public class JumpPointSearchPathfinder : PathfindingAlgorithm {
         private static readonly Vector2Int[] Directions = {
             Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right,
-            new Vector2Int(-1, -1), new Vector2Int(-1, 1), new Vector2Int(1, -1), new Vector2Int(1, 1)
+            new(-1, -1), new(-1, 1), new(1, -1), new(1, 1)
         };
 
-        public JumpPointSearchPathfinder(Grid grid) {
-            _grid = grid;
-        }
+        private readonly PriorityQueue<Node> _open = new();
+        private readonly HashSet<Node> _closed = new();
 
-        public List<Node> FindPath(Vector2Int start, Vector2Int goal) {
-            Node startNode = _grid.GetNode(start);
-            Node goalNode = _grid.GetNode(goal);
+        public JumpPointSearchPathfinder(Grid grid) : base(grid) { }
 
-            if (startNode == null || goalNode == null || !goalNode.IsWalkable)
+        public override List<Node> FindPath(Vector2Int startIndex, Vector2Int goalIndex, bool optimize) {
+            var start = grid.GetNode(startIndex);
+            var goal = grid.GetNode(goalIndex);
+
+            if (start == null || goal is not { IsWalkable: true })
                 return null;
 
-            List<Node> openSet = new List<Node> { startNode };
-            HashSet<Node> closedSet = new HashSet<Node>();
+            _open.Clear();
+            _closed.Clear();
 
-            while (openSet.Count > 0) {
-                Node current = openSet[0];
-                foreach (var node in openSet)
-                    if (node.F < current.F)
-                        current = node;
+            _open.Enqueue(start, 0);
 
-                openSet.Remove(current);
-                closedSet.Add(current);
+            while (_open.Count > 0) {
+                var current = _open.Dequeue();
 
-                if (current == goalNode)
-                    return ReconstructPath(goalNode);
+                if (current == goal)
+                    return ReconstructPath(goal, optimize);
 
-                foreach (var neighbor in GetJumpPoints(current, goalNode)) {
-                    if (closedSet.Contains(neighbor))
+                _closed.Add(current);
+
+                foreach (var neighbor in GetJumpPoints(current, goal)) {
+                    if (_closed.Contains(neighbor))
                         continue;
 
-                    float gCost = current.G + Vector2Int.Distance(current.Index, neighbor.Index);
-                    if (!openSet.Contains(neighbor) || gCost < neighbor.G) {
-                        neighbor.G = gCost;
-                        neighbor.H = Vector2Int.Distance(neighbor.Index, goalNode.Index);
-                        neighbor.Parent = current;
+                    // 지형 가중치를 고려한 G 비용 계산
+                    var terrainWeight = Weights[neighbor.TerrainType];
+                    var gCost = current.G + Vector2Int.Distance(current.Index, neighbor.Index) * terrainWeight;
+                    if (_open.Contains(neighbor) && !(gCost < neighbor.G))
+                        continue;
 
-                        if (!openSet.Contains(neighbor))
-                            openSet.Add(neighbor);
-                    }
+                    neighbor.G = gCost;
+                    neighbor.H = Vector2Int.Distance(neighbor.Index, goal.Index);
+                    neighbor.Parent = current;
+
+                    if (!_open.Contains(neighbor))
+                        _open.Enqueue(neighbor, neighbor.F);
                 }
             }
 
@@ -56,17 +56,17 @@ namespace UnityTools.Pathfinding {
         }
 
         private List<Node> GetJumpPoints(Node current, Node goal) {
-            List<Node> jumpPoints = new List<Node>();
+            var jumpPoints = new List<Node>();
 
             foreach (var direction in Directions) {
-                Node next = _grid.GetNode(current.Index + direction);
-                while (next != null && next.IsWalkable) {
+                var next = grid.GetNode(current.Index + direction);
+                while (next is { IsWalkable: true }) {
                     if (next.Index == goal.Index || HasForcedNeighbor(next, direction)) {
                         jumpPoints.Add(next);
                         break;
                     }
 
-                    next = _grid.GetNode(next.Index + direction);
+                    next = grid.GetNode(next.Index + direction);
                 }
             }
 
@@ -74,35 +74,24 @@ namespace UnityTools.Pathfinding {
         }
 
         private bool HasForcedNeighbor(Node node, Vector2Int direction) {
-            Vector2Int left = new Vector2Int(-direction.y, direction.x);
-            Vector2Int right = new Vector2Int(direction.y, -direction.x);
+            var leftIndex = new Vector2Int(-direction.y, direction.x);
+            var rightIndex = new Vector2Int(direction.y, -direction.x);
 
-            Node leftNode = _grid.GetNode(node.Index + left);
-            Node rightNode = _grid.GetNode(node.Index + right);
+            var left = grid.GetNode(node.Index + leftIndex);
+            var right = grid.GetNode(node.Index + rightIndex);
 
-            bool isForced = (leftNode != null && !leftNode.IsWalkable) || (rightNode != null && !rightNode.IsWalkable);
+            var isForced = left is { IsWalkable: false } || right is { IsWalkable: false };
 
             // 대각선 이동 시 추가적인 강제 이웃 검사
-            if (direction.x != 0 && direction.y != 0) {
-                Node diagonalLeft = _grid.GetNode(node.Index + new Vector2Int(direction.x, 0));
-                Node diagonalRight = _grid.GetNode(node.Index + new Vector2Int(0, direction.y));
-                isForced |= (diagonalLeft != null && !diagonalLeft.IsWalkable) ||
-                            (diagonalRight != null && !diagonalRight.IsWalkable);
-            }
+            if (direction.x == 0 || direction.y == 0)
+                return isForced;
+
+            var diagonalLeft = grid.GetNode(node.Index + new Vector2Int(direction.x, 0));
+            var diagonalRight = grid.GetNode(node.Index + new Vector2Int(0, direction.y));
+            isForced |= diagonalLeft is { IsWalkable: false } ||
+                        diagonalRight is { IsWalkable: false };
 
             return isForced;
-        }
-
-        private List<Node> ReconstructPath(Node goalNode) {
-            List<Node> path = new List<Node>();
-            Node current = goalNode;
-            while (current != null) {
-                path.Add(current);
-                current = current.Parent;
-            }
-
-            path.Reverse();
-            return path;
         }
     }
 }
