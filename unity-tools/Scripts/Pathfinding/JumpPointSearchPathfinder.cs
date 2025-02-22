@@ -14,14 +14,16 @@ namespace UnityTools.Pathfinding {
         public JumpPointSearchPathfinder(Grid grid) : base(grid) { }
 
         public override List<Node> FindPath(Vector2Int startIndex, Vector2Int goalIndex, bool optimize) {
-            var start = grid.GetNode(startIndex);
-            var goal = grid.GetNode(goalIndex);
+            var start = Grid.GetNode(startIndex);
+            var goal = Grid.GetNode(goalIndex);
 
             if (start == null || goal is not { IsWalkable: true })
                 return null;
 
             _open.Clear();
             _closed.Clear();
+            
+            Grid.PrepareFindWay();
 
             _open.Enqueue(start, 0);
 
@@ -59,14 +61,14 @@ namespace UnityTools.Pathfinding {
             var jumpPoints = new List<Node>();
 
             foreach (var direction in Directions) {
-                var next = grid.GetNode(current.Index + direction);
+                var next = Grid.GetNode(current.Index + direction);
                 while (next is { IsWalkable: true }) {
                     if (next.Index == goal.Index || HasForcedNeighbor(next, direction)) {
                         jumpPoints.Add(next);
                         break;
                     }
 
-                    next = grid.GetNode(next.Index + direction);
+                    next = Grid.GetNode(next.Index + direction);
                 }
             }
 
@@ -77,8 +79,8 @@ namespace UnityTools.Pathfinding {
             var leftIndex = new Vector2Int(-direction.y, direction.x);
             var rightIndex = new Vector2Int(direction.y, -direction.x);
 
-            var left = grid.GetNode(node.Index + leftIndex);
-            var right = grid.GetNode(node.Index + rightIndex);
+            var left = Grid.GetNode(node.Index + leftIndex);
+            var right = Grid.GetNode(node.Index + rightIndex);
 
             var isForced = left is { IsWalkable: false } || right is { IsWalkable: false };
 
@@ -86,8 +88,8 @@ namespace UnityTools.Pathfinding {
             if (direction.x == 0 || direction.y == 0)
                 return isForced;
 
-            var diagonalLeft = grid.GetNode(node.Index + new Vector2Int(direction.x, 0));
-            var diagonalRight = grid.GetNode(node.Index + new Vector2Int(0, direction.y));
+            var diagonalLeft = Grid.GetNode(node.Index + new Vector2Int(direction.x, 0));
+            var diagonalRight = Grid.GetNode(node.Index + new Vector2Int(0, direction.y));
             isForced |= diagonalLeft is { IsWalkable: false } ||
                         diagonalRight is { IsWalkable: false };
 

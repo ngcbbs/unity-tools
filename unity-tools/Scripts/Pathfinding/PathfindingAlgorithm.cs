@@ -4,12 +4,12 @@ using UnityEngine;
 namespace UnityTools.Pathfinding {
     public abstract class PathfindingAlgorithm : IAlgorithm {
         public virtual List<Node> FindPath(Vector2Int startIndex, Vector2Int goalIndex, bool optimize) => null;
-        protected readonly Grid grid;
+        protected readonly Grid Grid;
         
         protected Dictionary<TerrainType, float> Weights { get; }
 
         protected PathfindingAlgorithm(Grid grid) {
-            this.grid = grid;
+            Grid = grid;
             Weights = new Dictionary<TerrainType, float> {
                 { TerrainType.Normal, 1.0f },
                 { TerrainType.Rough, 2.0f },
@@ -52,7 +52,7 @@ namespace UnityTools.Pathfinding {
                 Vector2 point = (Vector2)start.Index + direction * i;
                 Vector2Int gridPoint = Vector2Int.RoundToInt(point);
 
-                Node node = grid.GetNode(gridPoint);
+                Node node = Grid.GetNode(gridPoint);
                 if (node is not { IsWalkable: true })
                     return false;
             }

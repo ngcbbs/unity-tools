@@ -9,6 +9,11 @@ namespace UnityTools.Pathfinding {
             _nodes.Clear();
         }
 
+        public void PrepareFindWay() {
+            foreach (var node in _nodes.Values)
+                node.Parent = null;
+        }
+
         public Node GetNode(Vector2Int index) {
             return _nodes.GetValueOrDefault(index);
         }

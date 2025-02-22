@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace UnityTools.DependencyInjection {
     [DefaultExecutionOrder(-1000)]
-    public class Injector : Singleton<Injector> {
+    public class Injector : PersistentSingleton<Injector> {
         private const BindingFlags kBindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
         private readonly Dictionary<Type, object> _registry = new();
 

@@ -14,14 +14,16 @@ namespace UnityTools.Pathfinding {
         public AStarPathfinder(Grid grid) : base(grid) { }
 
         public override List<Node> FindPath(Vector2Int startIndex, Vector2Int goalIndex, bool optimize) {
-            var start = grid.GetNode(startIndex);
-            var goal = grid.GetNode(goalIndex);
+            var start = Grid.GetNode(startIndex);
+            var goal = Grid.GetNode(goalIndex);
 
             if (start == null || goal is not { IsWalkable: true })
                 return null;
 
             _open.Clear();
             _closed.Clear();
+
+            Grid.PrepareFindWay();
 
             _open.Enqueue(start, 0);
 
@@ -60,7 +62,7 @@ namespace UnityTools.Pathfinding {
             var neighbors = new List<Node>();
 
             foreach (var dir in Directions) {
-                var neighbor = grid.GetNode(node.Index + dir);
+                var neighbor = Grid.GetNode(node.Index + dir);
                 if (neighbor is { IsWalkable: true })
                     neighbors.Add(neighbor);
             }
